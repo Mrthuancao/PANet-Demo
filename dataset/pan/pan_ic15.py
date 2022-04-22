@@ -2,7 +2,7 @@ import math
 import random
 import string
 
-import cv2
+import cv2, os
 import mmcv
 import numpy as np
 import Polygon as plg
@@ -12,15 +12,17 @@ import torchvision.transforms as transforms
 from PIL import Image
 from torch.utils import data
 
-ic15_root_dir = './data/ICDAR2015/Challenge4/'
-ic15_train_data_dir = ic15_root_dir + 'ch4_training_images/'
-ic15_train_gt_dir = ic15_root_dir + \
-                    'ch4_training_localization_transcription_gt/'
-ic15_test_data_dir = ic15_root_dir + 'ch4_test_images/'
-ic15_test_gt_dir = ic15_root_dir + \
-                   'ch4_test_localization_transcription_gt/'
+ic15_root_dir = '/content/My_data/'
+# ic15_train_data_dir = ic15_root_dir + 'ch4_training_images/'
+ic15_train_data_dir = os.path.join(ic15_root_dir,'training_img')
+# ic15_train_gt_dir = ic15_root_dir + \
+#                     'ch4_training_localization_transcription_gt/'
+ic15_train_gt_dir = os.path.join(ic15_root_dir,'training_gt')
+# ic15_test_data_dir = ic15_root_dir + 'ch4_test_images/'
+# ic15_test_gt_dir = ic15_root_dir + \
+#                    'ch4_test_localization_transcription_gt/'
 
-
+os.path.join(ic15_root_dir,'ch4_training_images')
 def get_img(img_path, read_type='pil'):
     try:
         if read_type == 'cv2':
@@ -44,10 +46,13 @@ def get_ann(img, gt_path):
         line = line.replace('\xef\xbb\xbf', '')
         gt = line.split(',')
         word = gt[8].replace('\r', '').replace('\n', '')
-        if word[0] == '#':
-            words.append('###')
-        else:
-            words.append(word)
+        try:
+          if word[0] == '#':
+              words.append('###')
+          else:
+              words.append(word)
+        except:
+          continue
 
         bbox = [int(gt[i]) for i in range(8)]
         bbox = np.array(bbox) / ([w * 1.0, h * 1.0] * 4)
@@ -273,9 +278,9 @@ class PAN_IC15(data.Dataset):
         if split == 'train':
             data_dirs = [ic15_train_data_dir]
             gt_dirs = [ic15_train_gt_dir]
-        elif split == 'test':
-            data_dirs = [ic15_test_data_dir]
-            gt_dirs = [ic15_test_gt_dir]
+        # elif split == 'test':
+        #     data_dirs = [ic15_test_data_dir]
+        #     gt_dirs = [ic15_test_gt_dir]
         else:
             print('Error: split must be train or test!')
             raise
@@ -294,11 +299,11 @@ class PAN_IC15(data.Dataset):
             img_paths = []
             gt_paths = []
             for idx, img_name in enumerate(img_names):
-                img_path = data_dir + img_name
+                img_path = os.path.join(data_dir, img_name)
                 img_paths.append(img_path)
 
                 gt_name = 'gt_' + img_name.split('.')[0] + '.txt'
-                gt_path = gt_dir + gt_name
+                gt_path = os.path.join(gt_dir , gt_name)
                 gt_paths.append(gt_path)
 
             self.img_paths.extend(img_paths)
