@@ -46,10 +46,10 @@ def get_ann(img, gt_path):
         word = gt[8].replace('\r', '').replace('\n', '')
 
         try:
-        if word[0] == '#':
-            words.append('###')
-        else:
-            words.append(word)
+          if word[0] == '#':
+              words.append('###')
+          else:
+              words.append(word)
         except:
           word.append('###')
 
