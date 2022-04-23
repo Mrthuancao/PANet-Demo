@@ -44,10 +44,14 @@ def get_ann(img, gt_path):
         line = line.replace('\xef\xbb\xbf', '')
         gt = line.split(',')
         word = gt[8].replace('\r', '').replace('\n', '')
+
+        try:
         if word[0] == '#':
             words.append('###')
         else:
             words.append(word)
+        except:
+          word.append(word)
 
         bbox = [int(gt[i]) for i in range(8)]
         bbox = np.array(bbox) / ([w * 1.0, h * 1.0] * 4)
