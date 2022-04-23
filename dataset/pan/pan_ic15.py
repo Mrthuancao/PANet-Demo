@@ -51,7 +51,7 @@ def get_ann(img, gt_path):
         else:
             words.append(word)
         except:
-          word.append(word)
+          word.append('###')
 
         bbox = [int(gt[i]) for i in range(8)]
         bbox = np.array(bbox) / ([w * 1.0, h * 1.0] * 4)
