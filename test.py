@@ -94,8 +94,10 @@ def test(test_loader, model, cfg):
         if with_rec:
             outputs = pp.process(data['img_metas'], outputs)
 
+    
         # save result
         rf.write_result(data['img_metas'], outputs)
+
 
         # visualize
         if cfg.vis:

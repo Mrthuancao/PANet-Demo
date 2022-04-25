@@ -2,7 +2,7 @@ import math
 import random
 import string
 
-import cv2
+import cv2, os
 import mmcv
 import numpy as np
 import Polygon as plg
@@ -16,9 +16,9 @@ ic15_root_dir = '/content/My_data/'
 ic15_train_data_dir = ic15_root_dir + 'training_img/'
 ic15_train_gt_dir = ic15_root_dir + \
                     'training_gt/'
-ic15_test_data_dir = ic15_root_dir + 'training_img/'
+ic15_test_data_dir = ic15_root_dir + 'public_test_img/'
 ic15_test_gt_dir = ic15_root_dir + \
-                   'training_gt/'
+                   'public_test_gt/'
 
 
 def get_img(img_path, read_type='pil'):
@@ -449,6 +449,12 @@ class PAN_IC15(data.Dataset):
 
         img = scale_aligned_short(img, self.short_size)
         img_meta.update(dict(img_size=np.array(img.shape[:2])))
+
+        img_meta.update(dict(
+          img_size=np.array(img.shape[:2]),
+          img_name=os.path.basename(img_path),
+          )
+        )
 
         img = Image.fromarray(img)
         img = img.convert('RGB')
