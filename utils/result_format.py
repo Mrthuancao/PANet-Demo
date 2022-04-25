@@ -18,9 +18,6 @@ class ResultFormat(object):
             os.makedirs(result_path)
 
     def write_result(self, img_metas, outputs):
-        print('-----')
-        print(img_metas)
-        print('-----')
         img_name = img_metas['img_name'][0]
         if 'IC15' in self.data_type:
             self._write_result_ic15(img_name, outputs)
