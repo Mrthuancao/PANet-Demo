@@ -453,6 +453,7 @@ class PAN_IC15(data.Dataset):
         img_meta.update(dict(
           img_size=np.array(img.shape[:2]),
           img_name=os.path.basename(img_path),
+          img_path=img_path
           )
         )
 

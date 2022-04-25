@@ -11,6 +11,7 @@ class Visualizer:
             os.makedirs(vis_path)
 
     def process(self, img_metas, outputs):
+        print(img_metas)
         img_path = img_metas['img_path'][0]
         img_name = img_metas['img_name'][0]
         bboxes = outputs['bboxes']
